@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="8" fill="url(#grad1)"/>
+  <!-- Gear icon -->
+  <g fill="white" transform="translate(12, 12) scale(0.8)">
+    <path d="M25.5 4.5h-7l-1 4.5c-.8.3-1.5.7-2.2 1.1l-4.3-2-5 8.5 3.3 3c-.1.5-.1 1-.1 1.4s0 .9.1 1.4l-3.3 3 5 8.5 4.3-2c.7.5 1.4.8 2.2 1.1l1 4.5h7l1-4.5c.8-.3 1.5-.7 2.2-1.1l4.3 2 5-8.5-3.3-3c.1-.5.1-1 .1-1.4s0-.9-.1-1.4l3.3-3-5-8.5-4.3 2c-.7-.5-1.4-.8-2.2-1.1l-1-4.5zm-3.5 12a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z"/>
+  </g>
+  <!-- Analysis chart bars -->
+  <rect x="42" y="38" width="6" height="16" rx="1" fill="white" opacity="0.9"/>
+  <rect x="50" y="32" width="6" height="22" rx="1" fill="white" opacity="0.9"/>
+</svg>

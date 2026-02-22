@@ -1,0 +1,54 @@
+{
+  "name": "n8n-nodes-automation-analyzer",
+  "version": "1.0.0",
+  "description": "n8n node to analyze business workflows and generate automation opportunity reports",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "automation",
+    "workflow analysis",
+    "business intelligence",
+    "ROI"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jonklinger02/n8n-nodes-automation-analyzer#readme",
+  "author": {
+    "name": "OpenClaw"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonklinger02/n8n-nodes-automation-analyzer.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials --ext .ts",
+    "lintfix": "eslint nodes credentials --ext .ts --fix",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/AutomationAnalyzerApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/AutomationAnalyzer/AutomationAnalyzer.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "gulp": "^4.0.2",
+    "n8n-workflow": "^1.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "~5.0.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "dependencies": {}
+}
