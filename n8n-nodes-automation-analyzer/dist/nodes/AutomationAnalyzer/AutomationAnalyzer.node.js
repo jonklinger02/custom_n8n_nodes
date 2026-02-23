@@ -427,6 +427,27 @@ async function executePythonScript(clientData, scriptPath) {
         catch { /* ignore */ }
     }
 }
+/**
+ * Extract JSON from potentially markdown-wrapped content.
+ * Handles both raw JSON and markdown code fences (```json ... ``` or ``` ... ```).
+ */
+function extractJSON(content) {
+    if (!content)
+        return content;
+    // Trim whitespace first
+    let text = content.trim();
+    // Check for markdown code fences
+    const codeBlockRegex = /^```(?:json)?\s*\n?([\s\S]*?)\n?```$/;
+    const match = text.match(codeBlockRegex);
+    if (match) {
+        text = match[1].trim();
+    }
+    // Also handle case where content starts with ``` but might not be properly closed
+    if (text.startsWith('```')) {
+        text = text.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```$/, '').trim();
+    }
+    return text;
+}
 function buildAnalysisPrompt(clientData) {
     return `You are an automation consultant analyzing a client's business for workflow automation opportunities.
 
@@ -514,7 +535,9 @@ async function callOpenAI(prompt, credentials) {
                     const response = JSON.parse(body);
                     const content = (_c = (_b = (_a = response.choices) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.message) === null || _c === void 0 ? void 0 : _c.content;
                     if (content) {
-                        const parsed = JSON.parse(content);
+                        // Extract JSON from potentially markdown-wrapped content
+                        const jsonContent = extractJSON(content);
+                        const parsed = JSON.parse(jsonContent);
                         resolve({
                             success: true,
                             analysisType: 'openai',
@@ -570,7 +593,9 @@ async function callAnthropic(prompt, credentials) {
                     const response = JSON.parse(body);
                     const content = (_b = (_a = response.content) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.text;
                     if (content) {
-                        const parsed = JSON.parse(content);
+                        // Extract JSON from potentially markdown-wrapped content
+                        const jsonContent = extractJSON(content);
+                        const parsed = JSON.parse(jsonContent);
                         resolve({
                             success: true,
                             analysisType: 'anthropic',

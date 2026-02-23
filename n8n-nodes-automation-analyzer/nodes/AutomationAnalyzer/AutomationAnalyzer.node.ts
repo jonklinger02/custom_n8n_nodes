@@ -503,6 +503,32 @@ async function executePythonScript(clientData: ClientData, scriptPath: string): 
 	}
 }
 
+/**
+ * Extract JSON from potentially markdown-wrapped content.
+ * Handles both raw JSON and markdown code fences (```json ... ``` or ``` ... ```).
+ */
+function extractJSON(content: string): string {
+	if (!content) return content;
+	
+	// Trim whitespace first
+	let text = content.trim();
+	
+	// Check for markdown code fences
+	const codeBlockRegex = /^```(?:json)?\s*\n?([\s\S]*?)\n?```$/;
+	const match = text.match(codeBlockRegex);
+	
+	if (match) {
+		text = match[1].trim();
+	}
+	
+	// Also handle case where content starts with ``` but might not be properly closed
+	if (text.startsWith('```')) {
+		text = text.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```$/, '').trim();
+	}
+	
+	return text;
+}
+
 function buildAnalysisPrompt(clientData: ClientData): string {
 	return `You are an automation consultant analyzing a client's business for workflow automation opportunities.
 
@@ -592,7 +618,9 @@ async function callOpenAI(prompt: string, credentials: { apiKey: string; model?:
 					const response = JSON.parse(body);
 					const content = response.choices?.[0]?.message?.content;
 					if (content) {
-						const parsed = JSON.parse(content);
+						// Extract JSON from potentially markdown-wrapped content
+						const jsonContent = extractJSON(content);
+						const parsed = JSON.parse(jsonContent);
 						resolve({
 							success: true,
 							analysisType: 'openai',
@@ -649,7 +677,9 @@ async function callAnthropic(prompt: string, credentials: { apiKey: string; mode
 					const response = JSON.parse(body);
 					const content = response.content?.[0]?.text;
 					if (content) {
-						const parsed = JSON.parse(content);
+						// Extract JSON from potentially markdown-wrapped content
+						const jsonContent = extractJSON(content);
+						const parsed = JSON.parse(jsonContent);
 						resolve({
 							success: true,
 							analysisType: 'anthropic',
